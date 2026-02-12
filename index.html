@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>修仙系统互动模拟</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="ink-bg"></div>
+  <header class="topbar">
+    <h1>修仙系统互动模拟</h1>
+    <div class="time-box">
+      <span id="timeDisplay">第1年·1月·1日 子时</span>
+      <span id="timerDisplay">下个时辰：40s</span>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel dialogue-panel">
+      <h2>系统对话</h2>
+      <div id="dialogueLog" class="log"></div>
+      <div class="input-row">
+        <input id="commandInput" placeholder="输入指令：修炼 / 闭关 / 探索 / 投资 林清雪 200 / 突破 / 加入宗门 青岚宗 ..." />
+        <button id="sendBtn">发送</button>
+      </div>
+    </section>
+
+    <section class="panel center-panel">
+      <h2>世界事件</h2>
+      <div id="eventLog" class="log"></div>
+      <div class="actions-grid">
+        <button data-action="cultivate">修炼</button>
+        <button data-action="secluded">闭关</button>
+        <button data-action="explore">探索</button>
+        <button data-action="alchemy">炼丹</button>
+        <button data-action="artifact">炼器</button>
+        <button data-action="dungeon">探秘副本</button>
+        <button data-action="breakthrough">尝试突破</button>
+      </div>
+    </section>
+
+    <aside class="panel stats-panel">
+      <h2>宿主面板</h2>
+      <div id="stats"></div>
+
+      <h3>投资面板（天骄）</h3>
+      <div id="prodigyList" class="prodigy-list"></div>
+
+      <h3>地图与宗门</h3>
+      <div id="mapPanel"></div>
+    </aside>
+  </main>
+
+  <template id="prodigyTpl">
+    <div class="prodigy-card">
+      <div class="prodigy-header">
+        <strong class="name"></strong>
+        <span class="path"></span>
+      </div>
+      <div class="prodigy-meta"></div>
+      <div class="invest-row">
+        <input type="number" class="invest-input" min="10" step="10" value="100" />
+        <button class="invest-btn">投资</button>
+      </div>
+    </div>
+  </template>
+
+  <script src="game.js"></script>
+</body>
+</html>
