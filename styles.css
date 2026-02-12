@@ -42,12 +42,7 @@ body {
   backdrop-filter: blur(8px);
 }
 .topbar h1 { margin: 0; font-size: 22px; }
-.time-box {
-  display: grid;
-  gap: 4px;
-  justify-items: end;
-  font-size: 14px;
-}
+.time-box { display: grid; gap: 4px; justify-items: end; font-size: 14px; }
 
 .layout {
   position: relative;
@@ -83,22 +78,13 @@ body {
   scroll-behavior: smooth;
 }
 
-.msg {
-  margin: 6px 0;
-  padding: 8px;
-  border-radius: 8px;
-  line-height: 1.4;
-}
+.msg { margin: 6px 0; padding: 8px; border-radius: 8px; line-height: 1.4; }
 .msg.system { background: #ebfff5; }
 .msg.player { background: #fbeaf4; }
 .msg.world { background: #ecf8ff; }
 .msg.warn { background: #fff6df; }
 
-.input-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-}
+.input-row { display: flex; gap: 8px; margin-top: 10px; }
 .input-row input {
   flex: 1;
   border: 1px solid var(--line);
@@ -122,6 +108,19 @@ button:hover { background: linear-gradient(120deg, #e5ffee, #fff0f8); }
   gap: 8px;
 }
 
+.choice-panel {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.choice-panel button {
+  font-size: 12px;
+  padding: 6px;
+  border-style: dashed;
+}
+
 #stats {
   font-size: 14px;
   line-height: 1.5;
@@ -137,7 +136,7 @@ button:hover { background: linear-gradient(120deg, #e5ffee, #fff0f8); }
 }
 
 .prodigy-list {
-  max-height: 32vh;
+  max-height: 30vh;
   overflow: auto;
   display: grid;
   gap: 8px;
