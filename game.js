@@ -77,7 +77,7 @@ const state = {
 };
 
 const cooldownBook = new Map();
-const eventLibrary = buildEventLibrary();
+const eventLibrary = Array.isArray(EVENT_LIBRARY) ? EVENT_LIBRARY : [];
 
 const el = {
   dialogueLog: document.getElementById("dialogueLog"),
@@ -92,69 +92,6 @@ const el = {
   choicePanel: document.getElementById("choicePanel"),
   prodigyTpl: document.getElementById("prodigyTpl"),
 };
-
-function buildEventLibrary() {
-  const lib = [];
-  const domains = ["修炼", "探索", "投资", "炼丹", "炼器", "副本", "宗门", "天劫", "红尘", "妖兽"];
-  const moods = ["平稳", "激荡", "诡异", "祥瑞", "危机", "顿悟", "纷争", "潮涌"];
-  let id = 1;
-
-  for (let d = 0; d < domains.length; d++) {
-    for (let i = 0; i < 22; i++) {
-      const domain = domains[d];
-      const mood = moods[(d + i) % moods.length];
-      lib.push({
-        id: `EV-${id++}`,
-        title: `${domain}事件·${mood}第${i + 1}卷`,
-        desc: `【${domain}】${mood}异兆显现，系统提示你可以“求稳、冒险、借势”。`,
-        tags: [domain, mood],
-        minRealm: (d + i) % 5 === 0 ? 1 : 0,
-        weight: 4 + (i % 8),
-        cooldown: 2 + (i % 5),
-        choices: [
-          { text: "求稳处理", effects: { mood: 2, demonMark: -1, cultivation: 16 } },
-          { text: "冒险夺机缘", effects: { cultivation: 45, stones: 120, injuries: 3, demonMark: 1 } },
-          { text: "借势布局", effects: { contribution: 4, merit: 1, karma: 1, tension: 1 } },
-        ],
-      });
-    }
-  }
-
-  for (let i = 0; i < 40; i++) {
-    lib.push({
-      id: `RISK-${i + 1}`,
-      title: `突破风险预警·${i + 1}`,
-      desc: `系统演算：若强行突破，可能触发「${["经脉淤塞", "道基裂纹", "丹火失衡", "心魔低语", "神识震荡", "法相反噬"][i % 6]}」。`,
-      tags: ["突破", "风险"],
-      minRealm: Math.floor(i / 8),
-      weight: 6,
-      cooldown: 5,
-      choices: [
-        { text: "停止突破，先稳固", effects: { mood: 2, demonMark: -2, insight: 1 } },
-        { text: "继续推演突破", effects: { cultivation: 35, demonMark: 2, daoHeart: -1, tribulationPressure: 1 } },
-      ],
-    });
-  }
-
-  for (let i = 0; i < 44; i++) {
-    lib.push({
-      id: `PD-${i + 1}`,
-      title: `天骄回响·${["捷报", "叛心", "顿悟", "受创", "奇遇", "求援"][i % 6]}#${i + 1}`,
-      desc: "你投资的天骄传来消息，不同应对会改变其忠诚与成长路径。",
-      tags: ["投资", "天骄"],
-      minRealm: 0,
-      weight: 7,
-      cooldown: 3,
-      choices: [
-        { text: "继续输血扶持", effects: { stones: -130, contribution: 3, prosperity: 1 } },
-        { text: "要求回报兑现", effects: { stones: 150, relationShift: -2 } },
-        { text: "放任其自生长", effects: { chaos: 1, tension: 1, relationShift: 1 } },
-      ],
-    });
-  }
-
-  return lib;
-}
 
 function logTo(panel, text, kind = "system") {
   const node = document.createElement("div");
