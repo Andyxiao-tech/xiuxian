@@ -91,7 +91,68 @@ const el = {
   mapPanel: document.getElementById("mapPanel"),
   choicePanel: document.getElementById("choicePanel"),
   prodigyTpl: document.getElementById("prodigyTpl"),
+  helpBtn: document.getElementById("helpBtn"),
+  guideModal: document.getElementById("guideModal"),
+  guideBackdrop: document.getElementById("guideBackdrop"),
+  closeGuideBtn: document.getElementById("closeGuideBtn"),
+  guideContent: document.getElementById("guideContent"),
 };
+
+
+function guideHtml() {
+  return `
+    <h4>一、核心玩法循环</h4>
+    <ul>
+      <li><b>行动（修炼/闭关/探索/炼丹/炼器/副本/突破/渡心劫）</b> 会改变资源与状态，并影响后续成功率与事件权重。</li>
+      <li><b>时间推进</b>：每40秒一个时辰，自动触发世界事件；事件需做抉择，不同选择会写入长期因果。</li>
+      <li><b>天骄投资</b>：短期返利 + 长期风险并存，叛变会提高乱度与因果，反向影响你的成长。</li>
+    </ul>
+
+    <h4>二、关键数值含义（以及对后续影响）</h4>
+    <ul>
+      <li><b>修为 cultivation</b>：突破的基础门槛；不足则无法进阶。</li>
+      <li><b>道心 daoHeart</b>：越高，突破与渡心劫成功率越高；过低会增加失败反噬。</li>
+      <li><b>灵力纯度 qiPurity</b>：决定突破需求与炼丹稳定；过低会提高突破所需修为并增失败代价。</li>
+      <li><b>心魔印记 demonMark</b>：持续降低行动收益、突破率；高到阈值会触发额外衰减（道心/心境/伤势）。</li>
+      <li><b>伤势 injuries</b>：降低行动效率与突破率；高伤会在日结算中继续拖累生命与心境。</li>
+      <li><b>功德 merit</b>：可缓解天劫压力，提高长期稳定收益。</li>
+      <li><b>因果 karma</b>：提高天劫压力、拉低突破与周结算质量；偏高时会持续反噬。</li>
+      <li><b>天劫压力 tribulationPressure</b>：全局负面修正，直接进入突破概率公式。</li>
+      <li><b>世界乱度 chaos / 紧张度 tension</b>：影响副本风险、宗门俸禄折损和事件环境恶化。</li>
+      <li><b>宗门贡献 contribution</b>：影响宗门周结算收益；但会受乱度与因果联动折损。</li>
+    </ul>
+
+    <h4>三、地图与地点修正</h4>
+    <ul>
+      <li>不同地点有风险/收益/税率修正，直接改变行动结果。</li>
+      <li>示例：秘境与妖域收益更高，但受伤与反噬概率更大，后续突破更难。</li>
+    </ul>
+
+    <h4>四、事件与抉择机制</h4>
+    <ul>
+      <li>事件触发后必须选择，选项效果会立即结算并叠加到长期状态。</li>
+      <li>例如“冒险夺机缘”通常给高收益，但会提高伤势/心魔，后续收益可能被反吃。</li>
+    </ul>
+
+    <h4>五、建议开局策略</h4>
+    <ul>
+      <li>前期先稳道心与纯度（修炼/闭关/炼丹），避免心魔和伤势过高。</li>
+      <li>突破前建议用“渡心劫”压心魔，再准备灵药与灵石。</li>
+      <li>投资优先忠诚高、魔性低的天骄，降低叛变导致的因果链崩坏。</li>
+    </ul>
+  `;
+}
+
+function openGuide() {
+  el.guideContent.innerHTML = guideHtml();
+  el.guideModal.classList.remove("hidden");
+  el.guideModal.setAttribute("aria-hidden", "false");
+}
+
+function closeGuide() {
+  el.guideModal.classList.add("hidden");
+  el.guideModal.setAttribute("aria-hidden", "true");
+}
 
 function logTo(panel, text, kind = "system") {
   const node = document.createElement("div");
@@ -422,8 +483,9 @@ function parseCommand(raw) {
     return investProdigy(name, Number(amt || 100));
   }
 
-  if (["帮助", "help"].includes(text.toLowerCase())) {
-    return logTo(el.dialogueLog, "指令：修炼/闭关/探索/炼丹/炼器/探秘副本/突破/渡心劫/加入宗门 名称/前往 地点/投资 天骄 金额", "system");
+  if (["帮助", "help", "玩法介绍", "玩法", "教程"].includes(text.toLowerCase())) {
+    openGuide();
+    return logTo(el.dialogueLog, "已为你打开玩法介绍，包含核心机制与数值因果说明。", "system");
   }
 
   logTo(el.dialogueLog, "系统已记录你的意图，世界线将在后续时辰反馈结果。", "system");
@@ -559,6 +621,10 @@ function boot() {
   logTo(el.eventLog, `事件库加载完成：${eventLibrary.length} 条，并已启用“事件选择→结果反馈→长期影响”链路。`, "world");
 
   document.querySelectorAll("[data-action]").forEach((btn) => btn.addEventListener("click", () => manualAction(btn.dataset.action)));
+  el.helpBtn.addEventListener("click", openGuide);
+  el.closeGuideBtn.addEventListener("click", closeGuide);
+  el.guideBackdrop.addEventListener("click", closeGuide);
+  window.addEventListener("keydown", (e) => { if (e.key === "Escape") closeGuide(); });
   el.sendBtn.addEventListener("click", () => { parseCommand(el.commandInput.value); el.commandInput.value = ""; });
   el.commandInput.addEventListener("keydown", (e) => {
     if (e.key === "Enter") { parseCommand(el.commandInput.value); el.commandInput.value = ""; }

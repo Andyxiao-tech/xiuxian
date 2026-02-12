@@ -10,9 +10,12 @@
   <div class="ink-bg"></div>
   <header class="topbar">
     <h1>修仙系统互动模拟</h1>
-    <div class="time-box">
+    <div class="topbar-actions">
+      <button id="helpBtn" class="help-btn">玩法介绍</button>
+      <div class="time-box">
       <span id="timeDisplay">第1年·1月·1日 子时</span>
       <span id="timerDisplay">下个时辰：40s</span>
+    </div>
     </div>
   </header>
 
@@ -68,6 +71,17 @@
     </div>
   </template>
 
+
+  <div id="guideModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop" id="guideBackdrop"></div>
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>玩法介绍（核心机制与数值因果）</h3>
+        <button id="closeGuideBtn">关闭</button>
+      </div>
+      <div id="guideContent" class="modal-body"></div>
+    </div>
+  </div>
   <script src="events-data.js"></script>
   <script src="game.js"></script>
 </body>
